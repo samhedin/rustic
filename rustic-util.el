@@ -73,7 +73,8 @@ non-nil."
 
 (defcustom rustic-analyzer-command '("~/.cargo/bin/ra_lsp_server")
   "Command for calling rust analyzer."
-  :type '(repeat (string)))
+  :type '(repeat (string))
+  :group 'rustic)
 
 (defcustom rustic-lsp-setup-p t
   "Setup LSP related stuff automatically."
