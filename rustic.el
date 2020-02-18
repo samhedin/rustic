@@ -1126,7 +1126,7 @@ This handles multi-line comments with a * prefix on each line."
 (defun rustic-before-save-hook ()
   "Don't throw error if rustfmt isn't installed, as it makes saving impossible."
   (when (and (rustic-format-on-save-p) (not (rustic-compilation-process-live t)))
-    (condition-case ()
+    (condition-case nil
         (progn
           (rustic-format-buffer t)
           (sit-for 0.1))
