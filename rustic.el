@@ -127,26 +127,11 @@ to the function arguments.  When nil, `->' will be indented one level."
   "Face for interpolating braces in builtin formatting macro strings."
   :group 'rustic)
 
-;;; Imenu support
-
-(defvar rustic-imenu-generic-expression
-  (append (mapcar #'(lambda (x)
-                      (list (capitalize x) (rustic-re-item-def-imenu x) 1))
-                  '("async fn" "enum" "struct" "union" "type" "mod" "fn" "trait" "impl"))
-          `(("Macro" ,(rustic-re-item-def-imenu "macro_rules!") 1)))
-  "Value for `imenu-generic-expression' in Rust mode.
-
-Create a hierarchical index of the item definitions in a Rust file.
-
-Imenu will show all the enums, structs, etc. in their own subheading.
-Use idomenu (imenu with `ido-mode') for best mileage.")
-
 ;;; Rust-mode
 
 (defconst rustic-re-ident "[[:word:][:multibyte:]_][[:word:][:multibyte:]_[:digit:]]*")
 (defconst rustic-re-lc-ident "[[:lower:][:multibyte:]_][[:word:][:multibyte:]_[:digit:]]*")
 (defconst rustic-re-uc-ident "[[:upper:]][[:word:][:multibyte:]_[:digit:]]*")
-(defconst rustic-re-vis "pub")
 (defconst rustic-re-unsafe "unsafe")
 (defconst rustic-re-extern "extern")
 (defconst rustic-re-generic
@@ -522,15 +507,6 @@ buffer."
       t)))
 
 (defconst rustic-re-pre-expression-operators "[-=!%&*/:<>[{(|.^;}]")
-
-(defun rustic-re-item-def-imenu (itype)
-  (concat "^[[:space:]]*"
-          (rustic-re-shy (concat (rustic-re-word rustic-re-vis) "[[:space:]]+")) "?"
-          (rustic-re-shy (concat (rustic-re-word "default") "[[:space:]]+")) "?"
-          (rustic-re-shy (concat (rustic-re-word rustic-re-unsafe) "[[:space:]]+")) "?"
-          (rustic-re-shy (concat (rustic-re-word rustic-re-extern) "[[:space:]]+"
-                                 (rustic-re-shy "\"[^\"]+\"[[:space:]]+") "?")) "?"
-          (rustic-re-item-def itype)))
 
 (defconst rustic-re-special-types (regexp-opt rustic-special-types 'symbols))
 
@@ -1148,6 +1124,31 @@ not in a rust project."
         (expand-file-name dir)
       (if nodefault
           nil default-directory))))
+
+;;; Imenu support
+
+(defconst rustic-re-vis "pub")
+
+(defun rustic-re-item-def-imenu (itype)
+  (concat "^[[:space:]]*"
+          (rustic-re-shy (concat (rustic-re-word rustic-re-vis) "[[:space:]]+")) "?"
+          (rustic-re-shy (concat (rustic-re-word "default") "[[:space:]]+")) "?"
+          (rustic-re-shy (concat (rustic-re-word rustic-re-unsafe) "[[:space:]]+")) "?"
+          (rustic-re-shy (concat (rustic-re-word rustic-re-extern) "[[:space:]]+"
+                                 (rustic-re-shy "\"[^\"]+\"[[:space:]]+") "?")) "?"
+          (rustic-re-item-def itype)))
+
+(defvar rustic-imenu-generic-expression
+  (append (mapcar #'(lambda (x)
+                      (list (capitalize x) (rustic-re-item-def-imenu x) 1))
+                  '("async fn" "enum" "struct" "union" "type" "mod" "fn" "trait" "impl"))
+          `(("Macro" ,(rustic-re-item-def-imenu "macro_rules!") 1)))
+  "Value for `imenu-generic-expression' in Rust mode.
+
+Create a hierarchical index of the item definitions in a Rust file.
+
+Imenu will show all the enums, structs, etc. in their own subheading.
+Use idomenu (imenu with `ido-mode') for best mileage.")
 
 ;;; _
 
