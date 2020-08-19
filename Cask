@@ -2,6 +2,8 @@
 (source melpa)
 
 (package-file "rustic.el")
+(package-file "rustdoc.el")
+(depends-on "helm-ag")
 
 (development
  (depends-on "ert-runner")
