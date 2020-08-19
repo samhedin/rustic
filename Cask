@@ -1,7 +1,6 @@
 (source gnu)
 (source melpa)
 
-
 (package-file "rustdoc.el")
 (depends-on "f")
 (depends-on "helm-ag")
