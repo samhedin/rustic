@@ -1219,6 +1219,7 @@ This handles multi-line comments with a * prefix on each line."
 (require 'rustic-babel)
 (require 'rustic-racer)
 (require 'rustic-interaction)
+(require 'rustdoc)
 
 (with-eval-after-load 'flycheck
   (require 'rustic-flycheck))

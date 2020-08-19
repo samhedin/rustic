@@ -33,6 +33,7 @@ DEPS += projectile
 DEPS += s
 DEPS += spinner
 DEPS += xterm-color
+DEPS += helm-ag
 
 LOAD_PATH  ?= $(addprefix -L ../,$(DEPS))
 LOAD_PATH  += -L .
